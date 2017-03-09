@@ -12,6 +12,26 @@
 typedef std::vector<int> VArray_Int;
 typedef std::vector<double> VArray_DB;
 
+void Show_Index_Page()
+{
+    puts("\n--------------------------------------------------------------------------------");
+    puts("|                                                                              |");
+    puts("|         Copyright (C) 2016 Yanzhe Lee. All rights reserved.                  |");
+    puts("|                                                                              |");
+    puts("|                       Harbin Institute of Technology                         |");
+    puts("|                                                                              |");
+    puts("|         License GPLv3+: GNU GPL version 3 or later                           |");
+    puts("|                                                                              |");
+    puts("|         This is free software: you are free to change and redistribute it    |");
+    puts("|                                                                              |");
+    puts("|         Email: lee.yanzhe@yanzhe.org           Version 1.0.0                 |");
+    puts("|                                                                              |");
+    puts("--------------------------------------------------------------------------------");
+    puts("|                       ---- Multinomial Equation ----                        |");
+    puts("--------------------------------------------------------------------------------");
+    puts("");
+}
+
 void Safe_Flush(FILE *fp)                                           //用于清空scanf缓冲区
 {
     int ch;
@@ -280,7 +300,8 @@ int main(int argc, const char * argv[])
     int n;
     int i;
     char preciseFlag;
-    cout<<"Please input maximum index of the Multinomial Equation : ";
+    Show_Index_Page();
+    cout<<"Please input maximum index of the Multinomial Equation : \n";
     while (scanf("%d",&n)!=1)
     {
         printf("\r");
@@ -310,7 +331,7 @@ int main(int argc, const char * argv[])
         }
         else
         {
-            cout<<"This equation do not exist rational root"<<endl;
+            cout<<"This equation do not exist rational root\n"<<endl;
         }
     }
     
@@ -342,7 +363,6 @@ int main(int argc, const char * argv[])
             cout<<"Invalid input, please input again: ";
             Safe_Flush(stdin);
         }
-        cout<<endl;
         cout<<"Please input the precision index (integer): ";
         while (scanf("%d",&accuracy)!=1)
         {
