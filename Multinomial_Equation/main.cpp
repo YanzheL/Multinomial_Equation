@@ -244,18 +244,26 @@ public:
     }
     
     VArray_DB Bisection_Method(double intervalA,double intervalB,int accuracy)      //二分法，给定区间端点A、B
-    {
+    {                                                                               //用于寻找无理根的近似解
         double middle=(intervalA+intervalB)/2;
         double precision=pow(10, -accuracy);
+        int preciAccu=accuracy;
+        
+        if (n>=3&&accuracy>8)
+        {
+            preciAccu=8;
+        }
+        
+        double equaPrecision=pow(10, -preciAccu);
         
         VArray_DB roots;
-        if (fabs(valueOfEqua(intervalA))<=precision)
+        if (fabs(valueOfEqua(intervalA))<=equaPrecision)
         {
             roots.push_back(intervalA);
             //            continueFlag=false;
             
         }
-        else if (fabs(valueOfEqua(intervalB))<=precision)
+        else if (fabs(valueOfEqua(intervalB))<=equaPrecision)
         {
             roots.push_back(intervalB);
             //            continueFlag=false;8
@@ -269,61 +277,65 @@ public:
             {                                                                       //无论是否找到根都退出，防止无限循环
                 break;
             }
-            if (fabs(valueOfEqua(middle))<=precision)
+            if (fabs(valueOfEqua(middle))<=equaPrecision)
             {
                 roots.push_back(middle);                                            //把找到的根存入数组
                 //                break;
-//                break;
             }
             
             
             if ((Root_Existance(intervalA, middle)==false)&&(Root_Existance(middle, intervalB)==false))
             {
-                //                std::cout<<"This equation probaly do not exist root"<<std::endl;
                 break;
             }
             
             if(Root_Existance(intervalA, middle))
             {
+                //                if (n<=5)                                                           //如果3次方程以内，则查找所有根，否则只查找一个根
+                //                {                                                                   //不然超过3次方程递归所需时间太长
                 VArray_DB tempRootA=Bisection_Method(intervalA, middle, accuracy);
-                long int sizeTA=0;
-                Remove_Same(tempRootA, accuracy);
-                sizeTA=tempRootA.size();
+                long int sizeTA=tempRootA.size();
                 if (sizeTA>0)
                 {
-//                    Remove_Same(tempRootA, accuracy);
+                    Remove_Same(tempRootA, accuracy);
                     sizeTA=tempRootA.size();
                     for (i=0; i<sizeTA; ++i)
                     {
                         roots.push_back(tempRootA.at(i));
                     }
-//                    break;
+                    //                    break;
                 }
+                //                }
+                //                else intervalB=middle;
+                
             }
             
             if(Root_Existance(middle,intervalB))
             {
+                //                if (n<=5)
+                //                {
                 VArray_DB tempRootB=Bisection_Method(middle, intervalB, accuracy);
-                long int sizeTB=0;
-                Remove_Same(tempRootB, accuracy);
-                sizeTB=tempRootB.size();
+                long int sizeTB=tempRootB.size();
                 if (sizeTB>0)
                 {
-//                    Remove_Same(tempRootB, accuracy);
+                    Remove_Same(tempRootB, accuracy);
                     sizeTB=tempRootB.size();
                     for (i=0; i<sizeTB; ++i)
                     {
                         roots.push_back(tempRootB.at(i));
                     }
-//                    break;
                 }
+                //                }
+                //                else intervalA=middle;
             }
             
-
+            
+            //            if (n<=5)
+            //            {
             if (roots.size()>0)
-            {
                 break;
-            }
+            //            }
+            //            else middle=(intervalA+intervalB)/2;
         }
         
         return roots;
@@ -403,6 +415,13 @@ int main(int argc, const char * argv[])
     {
         double intervalA,intervalB;
         int accuracy;
+        int displayAccu=accuracy;
+        
+        if (accuracy>7)
+        {
+            displayAccu=7;
+        }
+        
         cout<<"Please input the interval left endpoint A and right endpoint B"<<endl;
         while (scanf("%lf %lf",&intervalA,&intervalB)!=2)
         {
@@ -415,8 +434,9 @@ int main(int argc, const char * argv[])
             cout<<"Auto corrected the issue of A > B\n"<<endl;
             swap(intervalA,intervalB);
         }
-        cout<<"Please input the precision index (integer): ";
-        while (scanf("%d",&accuracy)!=1)
+        cout<<"Precision = 1x10^(-K), K is a integer no more than 10"<<endl;
+        cout<<"Please input the precision index 'K': ";
+        while (scanf("%d",&accuracy)!=1||accuracy>10)
         {
             printf("\r");
             cout<<"Invalid input, please input again: ";
@@ -424,16 +444,11 @@ int main(int argc, const char * argv[])
         }
         cout<<endl;
         
-        if (n>=4)
-        {
-            if (accuracy>3) accuracy=3;
-        }
-        
         VArray_DB roots=f.Bisection_Method(intervalA, intervalB, accuracy);
         if (roots.size()>0)
         {
             cout<<"Congratulations! This equation exist roots as listed"<<endl;
-            Remove_Same(roots,accuracy);
+            Remove_Same(roots,displayAccu);
             for (i=0; i<roots.size(); ++i)
             {
                 printf("%.8lf\n",roots.at(i));
