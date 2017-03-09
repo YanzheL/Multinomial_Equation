@@ -9,6 +9,10 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+
+#define UNIX
+
+
 typedef std::vector<int> VArray_Int;
 typedef std::vector<double> VArray_DB;
 
@@ -219,7 +223,6 @@ public:
     {
         double middle=(intervalA+intervalB)/2;
         double precision=pow(10, -accuracy);
-        bool continueFlag=true;
         
         VArray_DB roots;
         if (fabs(valueOfEqua(intervalA))<=precision)
@@ -234,37 +237,35 @@ public:
 //            continueFlag=false;8
         }
         
-        while (continueFlag)
-        {
 //            printf("Value = %lf\n",fabs(valueOfEqua(middle)));
             if (fabs(valueOfEqua(middle))<=precision)
             {
                 roots.push_back(middle);                                            //把找到的根存入数组
 //                break;
+                return roots;
             }
             
             
             if ((Root_Existance(intervalA, middle)==false)&&(Root_Existance(middle, intervalB)==false))
             {
 //                std::cout<<"This equation probaly do not exist root"<<std::endl;
-                break;
+                return roots;
             }
-            else if(Root_Existance(intervalA, middle))
+            
+            if(Root_Existance(intervalA, middle))
             {
-                intervalB=middle;
+                Bisection_Method(intervalA, middle, accuracy);
             }
-            else if(Root_Existance(middle,intervalB)==true)
+            
+            if(Root_Existance(middle,intervalB)==true)
             {
-                intervalA=middle;
+                Bisection_Method(middle, intervalB, accuracy);
             }
             
             if ((intervalB-intervalA)<=precision/10)                                //如果区间长度小于精度
             {                                                                       //无论是否找到根都退出，防止无限循环
-                break;
+                return roots;
             }
-            
-            middle=(intervalA+intervalB)/2;
-        }
         
         return roots;
     }
@@ -297,6 +298,13 @@ void Remove_Same(VA &array,int k)
 int main(int argc, const char * argv[])
 {
     using namespace std;
+#ifdef UNIX
+    system("clear");
+#endif
+#ifdef WINDOWS
+    system("cls");
+#endif
+    
     int n;
     int i;
     char preciseFlag;
