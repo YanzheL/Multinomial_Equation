@@ -12,6 +12,8 @@
 typedef std::vector<int> VArray_Int;
 typedef std::vector<double> VArray_DB;
 
+#define UNIX
+
 void Show_Index_Page()
 {
     puts("\n--------------------------------------------------------------------------------");
@@ -296,6 +298,12 @@ void Remove_Same(VA &array,int k)
 
 int main(int argc, const char * argv[])
 {
+#ifdef UNIX
+    system("clear");
+#endif
+#ifdef WINDOWS
+    system("cls");
+#endif
     using namespace std;
     int n;
     int i;
