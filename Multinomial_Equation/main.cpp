@@ -27,7 +27,7 @@ void Show_Index_Page()
     puts("|         Email: lee.yanzhe@yanzhe.org           Version 1.0.0                 |");
     puts("|                                                                              |");
     puts("--------------------------------------------------------------------------------");
-    puts("|                       ---- Multinomial Equation ----                        |");
+    puts("|                        ---- Multinomial Equation ----                        |");
     puts("--------------------------------------------------------------------------------");
     puts("");
 }
@@ -363,6 +363,11 @@ int main(int argc, const char * argv[])
             cout<<"Invalid input, please input again: ";
             Safe_Flush(stdin);
         }
+        if (intervalA>intervalB)
+        {
+            cout<<"Auto corrected the issue of A > B\n"<<endl;
+            swap(intervalA,intervalB);
+        }
         cout<<"Please input the precision index (integer): ";
         while (scanf("%d",&accuracy)!=1)
         {
@@ -372,11 +377,7 @@ int main(int argc, const char * argv[])
         }
         cout<<endl;
         
-        if (intervalA>intervalB)
-        {
-            cout<<"Auto corrected the issue of A > B"<<endl;
-            swap(intervalA,intervalB);
-        }
+
         
         VArray_DB roots=f.Bisection_Method(intervalA, intervalB, accuracy);
         if (roots.size()>0)
