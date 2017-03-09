@@ -260,13 +260,11 @@ public:
         if (fabs(valueOfEqua(intervalA))<=equaPrecision)
         {
             roots.push_back(intervalA);
-            //            continueFlag=false;
             
         }
         else if (fabs(valueOfEqua(intervalB))<=equaPrecision)
         {
             roots.push_back(intervalB);
-            //            continueFlag=false;8
         }
         
         
@@ -291,8 +289,6 @@ public:
             
             if(Root_Existance(intervalA, middle))
             {
-                //                if (n<=5)                                                           //如果3次方程以内，则查找所有根，否则只查找一个根
-                //                {                                                                   //不然超过3次方程递归所需时间太长
                 VArray_DB tempRootA=Bisection_Method(intervalA, middle, accuracy);
                 long int sizeTA=tempRootA.size();
                 if (sizeTA>0)
@@ -305,15 +301,11 @@ public:
                     }
                     //                    break;
                 }
-                //                }
-                //                else intervalB=middle;
                 
             }
             
             if(Root_Existance(middle,intervalB))
             {
-                //                if (n<=5)
-                //                {
                 VArray_DB tempRootB=Bisection_Method(middle, intervalB, accuracy);
                 long int sizeTB=tempRootB.size();
                 if (sizeTB>0)
@@ -325,17 +317,10 @@ public:
                         roots.push_back(tempRootB.at(i));
                     }
                 }
-                //                }
-                //                else intervalA=middle;
             }
             
-            
-            //            if (n<=5)
-            //            {
             if (roots.size()>0)
                 break;
-            //            }
-            //            else middle=(intervalA+intervalB)/2;
         }
         
         return roots;
