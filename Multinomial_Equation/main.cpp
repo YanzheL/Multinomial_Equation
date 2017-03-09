@@ -16,8 +16,6 @@
 typedef std::vector<int> VArray_Int;
 typedef std::vector<double> VArray_DB;
 
-#define UNIX
-
 void Show_Index_Page()
 {
 	puts("\n--------------------------------------------------------------------------------");
