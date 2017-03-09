@@ -42,6 +42,30 @@ void Safe_Flush(FILE *fp)                                           //用于清�
     while ((ch = fgetc(fp)) != EOF && ch != '\n');
 }
 
+template <class VA>
+void Remove_Same(VA &array,int k)
+{
+    VA arrayCopy;
+    arrayCopy.assign(array.begin(),array.end());
+    long i,j;
+    double precision=pow(10, -k);
+    for (i=0; i<arrayCopy.size(); ++i)
+    {
+        for (j=0; j<arrayCopy.size(); ++j)
+        {
+            if (i<arrayCopy.size()
+                &&j<arrayCopy.size()
+                &&fabs(arrayCopy.at(j)-arrayCopy.at(i))<=precision&&i!=j)
+            {
+                arrayCopy.erase(arrayCopy.begin()+j);
+            }
+        }
+    }
+    array.clear();
+    array.assign(arrayCopy.begin(),arrayCopy.end());
+    
+}
+
 class integer
 {
 private:
@@ -142,10 +166,10 @@ public:
             
             coefficient.push_back(temp);
             
-//            std::cout<<"Coefficient "<<i<<" = "<<coefficient.at(i)<<std::endl;
+            //            std::cout<<"Coefficient "<<i<<" = "<<coefficient.at(i)<<std::endl;
             
         }
-//        std::cout<<"Input END"<<std::endl;
+        //        std::cout<<"Input END"<<std::endl;
     }
     double valueOfEqua(double x)                                    //代入x计算多项式的值
     {
@@ -186,9 +210,9 @@ public:
         posibleRoot posible=Struct_Possible_Root();                 //  p必然整除常数项系数
         VArray_DB finalResult;                                      //  q必然整除最高次项系数
         
-//        std::cout<<"Einstein Begin"<<std::endl;
-//        std::cout<<"posible.dominator.size() = "<<posible.dominator.size()<<std::endl;
-//        std::cout<<"posible.numerator.size() = "<<posible.numerator.size()<<std::endl;
+        //        std::cout<<"Einstein Begin"<<std::endl;
+        //        std::cout<<"posible.dominator.size() = "<<posible.dominator.size()<<std::endl;
+        //        std::cout<<"posible.numerator.size() = "<<posible.numerator.size()<<std::endl;
         
         int idomi,jnum;
         for (idomi=0; idomi<posible.dominator.size(); ++idomi)
@@ -228,72 +252,87 @@ public:
         if (fabs(valueOfEqua(intervalA))<=precision)
         {
             roots.push_back(intervalA);
-//            continueFlag=false;
+            //            continueFlag=false;
             
         }
         else if (fabs(valueOfEqua(intervalB))<=precision)
         {
             roots.push_back(intervalB);
-//            continueFlag=false;8
+            //            continueFlag=false;8
         }
         
-//            printf("Value = %lf\n",fabs(valueOfEqua(middle)));
+        
+        //            printf("Value = %lf\n",fabs(valueOfEqua(middle)));
+        while(true)
+        {
+            if ((intervalB-intervalA)<=precision/10)                                //如果区间长度小于精度
+            {                                                                       //无论是否找到根都退出，防止无限循环
+                break;
+            }
             if (fabs(valueOfEqua(middle))<=precision)
             {
                 roots.push_back(middle);                                            //把找到的根存入数组
+                //                break;
 //                break;
-                return roots;
             }
             
             
             if ((Root_Existance(intervalA, middle)==false)&&(Root_Existance(middle, intervalB)==false))
             {
-//                std::cout<<"This equation probaly do not exist root"<<std::endl;
-                return roots;
+                //                std::cout<<"This equation probaly do not exist root"<<std::endl;
+                break;
             }
             
             if(Root_Existance(intervalA, middle))
             {
-                Bisection_Method(intervalA, middle, accuracy);
+                VArray_DB tempRootA=Bisection_Method(intervalA, middle, accuracy);
+                long int sizeTA=0;
+                Remove_Same(tempRootA, accuracy);
+                sizeTA=tempRootA.size();
+                if (sizeTA>0)
+                {
+//                    Remove_Same(tempRootA, accuracy);
+                    sizeTA=tempRootA.size();
+                    for (i=0; i<sizeTA; ++i)
+                    {
+                        roots.push_back(tempRootA.at(i));
+                    }
+//                    break;
+                }
             }
             
-            if(Root_Existance(middle,intervalB)==true)
+            if(Root_Existance(middle,intervalB))
             {
-                Bisection_Method(middle, intervalB, accuracy);
+                VArray_DB tempRootB=Bisection_Method(middle, intervalB, accuracy);
+                long int sizeTB=0;
+                Remove_Same(tempRootB, accuracy);
+                sizeTB=tempRootB.size();
+                if (sizeTB>0)
+                {
+//                    Remove_Same(tempRootB, accuracy);
+                    sizeTB=tempRootB.size();
+                    for (i=0; i<sizeTB; ++i)
+                    {
+                        roots.push_back(tempRootB.at(i));
+                    }
+//                    break;
+                }
             }
             
-            if ((intervalB-intervalA)<=precision/10)                                //如果区间长度小于精度
-            {                                                                       //无论是否找到根都退出，防止无限循环
-                return roots;
+
+            if (roots.size()>0)
+            {
+                break;
             }
+        }
         
         return roots;
     }
-
+    
     
 };
 
-template <class VA>
-void Remove_Same(VA &array,int k)
-{
-    VA arrayCopy;
-    arrayCopy.assign(array.begin(),array.end());
-    long i,j;
-    double precision=pow(10, -k);
-    for (i=0; i<arrayCopy.size(); ++i)
-    {
-        for (j=0; j<arrayCopy.size(); ++j)
-        {
-            if (fabs(arrayCopy.at(j)-arrayCopy.at(i))<=precision&&i!=j)
-            {
-                arrayCopy.erase(arrayCopy.begin()+j);
-            }
-        }
-    }
-    array.clear();
-    array.assign(arrayCopy.begin(),arrayCopy.end());
 
-}
 
 int main(int argc, const char * argv[])
 {
@@ -385,7 +424,10 @@ int main(int argc, const char * argv[])
         }
         cout<<endl;
         
-
+        if (n>=4)
+        {
+            if (accuracy>3) accuracy=3;
+        }
         
         VArray_DB roots=f.Bisection_Method(intervalA, intervalB, accuracy);
         if (roots.size()>0)
