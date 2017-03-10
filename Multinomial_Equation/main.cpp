@@ -5,12 +5,12 @@
 //  Created by LI YANZHE on 08/03/2017.
 //  Copyright © 2017 Yanzhe Lee. All rights reserved.
 //
-
+#include "stdafx.h"
 #include <iostream>
 #include <cmath>
 #include <vector>
 
-#define UNIX
+#define WINDOWS
 
 
 typedef std::vector<int> VArray_Int;
