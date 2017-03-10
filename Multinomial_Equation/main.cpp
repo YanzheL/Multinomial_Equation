@@ -389,11 +389,7 @@ int main(int argc, const char * argv[])
 	if (preciseFlag=='y')
 	{
 		double intervalA,intervalB;                                 //A、B两个区间端点
-		int accuracy;
-		int displayAccu=accuracy;
-		
-		if (accuracy>7)
-			displayAccu=7;                                          //为了保证最终结果不要出现重复的数字
+		int accuracy=0;
 		
 		cout<<"Please input the interval left endpoint A and right endpoint B"<<endl;
 		while (scanf("%lf %lf",&intervalA,&intervalB)!=2)
@@ -417,6 +413,11 @@ int main(int argc, const char * argv[])
 		}
 		cout<<endl;
 		
+		int displayAccu=accuracy;
+		
+		if (accuracy>7)
+			displayAccu=7;                                          //为了保证最终结果不要出现重复的数字
+
 		VArray_DB roots=f.Bisection_Method(intervalA, intervalB, accuracy);
 		if (roots.size()>0)
 		{
