@@ -205,7 +205,7 @@ public:
 		return posible;
 	}
 	
-	VArray_DB Einstein_Discrimination()                                            //"爱因斯坦判别法(Einstein Discrimination)"
+	VArray_DB Einstein_Discrimination()                             //"爱因斯坦判别法(Einstein Discrimination)"
 	{																//此方法可极大地提高求有理根的效率，避免了穷举
 		posibleRoot posible=Struct_Possible_Root();					//如果一个整系数多项式有有理根，设此有理根为p/q，则
 																	//  p必然整除常数项
