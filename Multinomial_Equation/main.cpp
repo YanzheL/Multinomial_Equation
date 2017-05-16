@@ -36,7 +36,7 @@ void Show_Index_Page()
 	puts("");
 }
 
-void Safe_Flush(FILE *fp)                                           //用于清空scanf缓冲区
+void Safe_Flush(FILE* fp)                                           //用于清空scanf缓冲区
 {
 	int ch;
 	while ((ch = fgetc(fp)) != EOF && ch != '\n');
@@ -178,6 +178,8 @@ public:
 		{
 			sum+=coefficient.at(i)*pow(x, n-i);
 		}
+//		std::cout<<"\t\tSUM="<<sum<<std::endl;
+		if (fabs(sum)<pow(10, -10))sum=0;
 		return sum;
 	}
 	
@@ -220,6 +222,7 @@ public:
 			for (jnumer=0; jnumer<posible.numerator.size(); ++jnumer)
 			{
 				double tempResult=(double)posible.numerator.at(jnumer)/(double)posible.dominator.at(idomi);
+//				std::cout<<"RESULT = "<<tempResult<<std::endl;
 				
 				if (valueOfEqua(tempResult)==0)
 				{
