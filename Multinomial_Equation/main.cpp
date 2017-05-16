@@ -43,7 +43,7 @@ void Safe_Flush(FILE *fp)                                           //用于清�
 }
 
 template <class VA>													//使用模板，使不同类型的vector均能使用
-void Remove_Same(VA &array,int k)									//去除array中重复的项
+void Remove_Same(VA& array,int k)									//去除array中重复的项
 {
 	VA arrayCopy;
 	arrayCopy.assign(array.begin(),array.end());
@@ -214,12 +214,12 @@ public:
 		//        std::cout<<"posible.dominator.size() = "<<posible.dominator.size()<<std::endl;
 		//        std::cout<<"posible.numerator.size() = "<<posible.numerator.size()<<std::endl;
 		
-		int idomi,jnum;
+		int idomi,jnumer;
 		for (idomi=0; idomi<posible.dominator.size(); ++idomi)
 		{
-			for (jnum=0; jnum<posible.numerator.size(); ++jnum)
+			for (jnumer=0; jnumer<posible.numerator.size(); ++jnumer)
 			{
-				double tempResult=(double)posible.numerator.at(jnum)/(double)posible.dominator.at(idomi);
+				double tempResult=(double)posible.numerator.at(jnumer)/(double)posible.dominator.at(idomi);
 				
 				if (valueOfEqua(tempResult)==0)
 				{
@@ -247,7 +247,7 @@ public:
 		
 		if (n>=3&&accuracy>8)                                       //此算法能完美计算一元二次方程
 			preciAccu=8;                                            //但是对于高次方程
-		//目前此算法最多找出两个根，抱歉
+																	//目前此算法最多找出两个根，抱歉
 		double equaPrecision=pow(10, -preciAccu);
 		
 		VArray_DB roots;
@@ -295,7 +295,6 @@ public:
 					}
 					//                    break;
 				}
-				
 			}
 			
 			if(Root_Existance(middle,intervalB))                    //这样可做到同时查找两个区间
